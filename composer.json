@@ -1,0 +1,34 @@
+{
+  "name": "dface/argument-resolver",
+  "description": "A PHP client library to prepare external arguments to pass to a method",
+  "keywords": [
+    "Type Cast",
+    "Arguments Resolver"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=13.4",
+    "dface/phpunit-customization": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "dface\\ArgumentResolver\\": [
+        "lib/"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "dface\\ArgumentResolver\\": "tests/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "8.5"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="bootstrap.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd" cacheDirectory=".phpunit.cache">
+  <coverage/>
+  <testsuites>
+    <testsuite name="Unit Tests">
+      <directory phpVersion="8.5">tests/</directory>
+    </testsuite>
+  </testsuites>
+  <extensions>
+    <bootstrap class="dface\PhpunitCustomization\ComparatorExtension"/>
+  </extensions>
+  <source>
+    <include>
+      <directory>lib/</directory>
+    </include>
+  </source>
+</phpunit>

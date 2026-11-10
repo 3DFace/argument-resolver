@@ -1,0 +1,6 @@
+.idea/
+.junie/
+vendor/
+.phpunit.result.cache
+.editorconfig
+composer.lock
