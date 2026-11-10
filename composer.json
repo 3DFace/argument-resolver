@@ -1,6 +1,6 @@
 {
   "name": "dface/argument-resolver",
-  "description": "A PHP client library to prepare external arguments to pass to a method",
+  "description": "PHP library to prepare external arguments to pass to a service method",
   "keywords": [
     "Type Cast",
     "Arguments Resolver"
