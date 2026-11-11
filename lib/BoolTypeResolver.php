@@ -17,6 +17,9 @@ class BoolTypeResolver implements TypeResolver
 
 	public function weakResolve(mixed $value) : array
 	{
+		if (\is_bool($value)) {
+			return [true, $value];
+		}
 		$bool = \filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 		return $bool === null ? [false, 'bool expected'] : [true, $bool];
 	}

@@ -17,7 +17,17 @@ class IntTypeResolver implements TypeResolver
 
 	public function weakResolve(mixed $value) : array
 	{
-		return \is_numeric($value) && (float)(int)$value === (float)$value ? [true, (int)$value] : [false, 'int expected'];
+		if (\is_int($value)) {
+			return [true, $value];
+		}
+		if (\is_numeric($value)) {
+			$int_val = (int)$value;
+			$float_val = (float)$value;
+			if ((float)$int_val === $float_val) {
+				return [true, $int_val];
+			}
+		}
+		return [false, 'int expected'];
 	}
 
 }
