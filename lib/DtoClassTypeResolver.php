@@ -18,30 +18,37 @@ readonly class DtoClassTypeResolver implements TypeResolver
 
 	public function strictResolve(mixed $value) : array
 	{
-		[$resolvable, $result] = $this->methodParametersResolver->strictResolve($value);
+		return $this->convertResolveResult($this->methodParametersResolver->strictResolve($value));
+	}
+
+	public function weakResolve(mixed $value) : array
+	{
+		return $this->convertResolveResult($this->methodParametersResolver->weakResolve($value));
+	}
+
+	private function convertResolveResult(array $resolve_result) : array
+	{
+		[$resolvable, $result] = $resolve_result;
 		if (!$resolvable) {
 			return [false, $result];
 		}
 		try {
 			$obj = ($this->factory)(...$result);
+		} catch (\TypeError $e) {
+			$msg = $e->getMessage();
+			return [false, $this->cleanUpTypeErrorMessage($msg)];
 		} catch (\Throwable $e) {
 			return [false, $e->getMessage()];
 		}
 		return [true, $obj];
 	}
 
-	public function weakResolve(mixed $value) : array
+	private function cleanUpTypeErrorMessage(string $msg) : string
 	{
-		[$resolvable, $result] = $this->methodParametersResolver->weakResolve($value);
-		if (!$resolvable) {
-			return [false, $result];
+		if ($called_in = \strpos($msg, ', called in')) {
+			$msg = \substr($msg, 0, $called_in);
 		}
-		try {
-			$obj = ($this->factory)(...$result);
-		} catch (\Throwable $e) {
-			return [false, $e->getMessage()];
-		}
-		return [true, $obj];
+		return \preg_replace("|[\w\\\\]+::|", '', $msg);
 	}
 
 }

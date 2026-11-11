@@ -7,10 +7,10 @@ readonly class TestDtoDeserialize extends TestDto
 
 	public static function deserialize(array|object $data) : self
 	{
-		if (!isset($data['prop1'])) throw new \InvalidArgumentException('Missing prop1');
-		if (!isset($data['prop2'])) throw new \InvalidArgumentException('Missing prop2');
-		if (!isset($data['prop3'])) throw new \InvalidArgumentException('Missing prop3');
-		if (!isset($data['prop4'])) throw new \InvalidArgumentException('Missing prop4');
+		if (!\array_key_exists('prop1', $data)) throw new \InvalidArgumentException('Missing prop1');
+		if (!\array_key_exists('prop2', $data)) throw new \InvalidArgumentException('Missing prop2');
+		if (!\array_key_exists('prop3', $data)) throw new \InvalidArgumentException('Missing prop3');
+		if (!\array_key_exists('prop4', $data)) throw new \InvalidArgumentException('Missing prop4');
 		return new self($data['prop1'], $data['prop2'], $data['prop3'], new TestEmail($data['prop4']));
 	}
 

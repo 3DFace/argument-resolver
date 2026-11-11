@@ -11,6 +11,9 @@ readonly class TestDto
 		public bool $field3,
 		public TestEmail $field4,
 	) {
+		if($this->field2 > 100){
+			throw new \InvalidArgumentException("'field2' must be less than 100");
+		}
 	}
 
 }

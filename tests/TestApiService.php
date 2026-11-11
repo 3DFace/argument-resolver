@@ -33,6 +33,10 @@ class TestApiService
 	{
 	}
 
+	public function dtoParameterDeserializeAssoc(TestDtoDeserializeAssoc $param1) : void
+	{
+	}
+
 	public function unionParameter(TestEnvelope|int|null $param1) : void
 	{
 	}

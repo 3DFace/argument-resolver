@@ -217,7 +217,27 @@ class MethodParametersResolverTest extends TestCase
 	/**
 	 * @throws \ReflectionException
 	 */
-	public function testDtoDeserializeAssoc() : void
+	public function testDtoParameterObjExceptionInConstructor() : void
+	{
+		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameter');
+		$resolver = $this->resolverFactory->createMethodResolver($method);
+
+		$obj = new stdClass();
+		$obj->field1 = "test";
+		$obj->field2 = 1000;
+		$obj->field3 = true;
+		$obj->field4 = 'test@test.com';
+		$rawData = [$obj];
+		[$success, $errors] = $resolver->weakResolve($rawData);
+
+		$this->assertFalse($success);
+		$this->assertStringContainsString("'param1': 'field2' must be less than 100", $errors);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function testDtoDeserialize() : void
 	{
 		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameterDeserialize');
 		$resolver = $this->resolverFactory->createMethodResolver($method);
@@ -227,6 +247,66 @@ class MethodParametersResolverTest extends TestCase
 
 		$this->assertTrue($success);
 		self::assertEquals(new TestDtoDeserialize("test", 1, true, new TestEmail('test@test.com')), $result[0]);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function testDtoDeserializeTypeErrorInConstructorCall() : void
+	{
+		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameterDeserialize');
+		$resolver = $this->resolverFactory->createMethodResolver($method);
+
+		$rawData = [["prop3" => 1, "prop1" => null, "prop2" => '1', "prop4" => 'test@test.com']];
+		[$success, $errors] = $resolver->weakResolve($rawData);
+
+		$this->assertFalse($success);
+		$this->assertStringContainsString("'param1': __construct(): Argument #1 (\$field1) must be of type string, null given", $errors);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function testDtoDeserializeExceptionInConstructor() : void
+	{
+		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameterDeserialize');
+		$resolver = $this->resolverFactory->createMethodResolver($method);
+
+		$rawData = [["prop3" => 1, "prop1" => "test", "prop2" => '1000', "prop4" => 'test@test.com']];
+		[$success, $errors] = $resolver->weakResolve($rawData);
+
+		$this->assertFalse($success);
+		$this->assertStringContainsString("'param1': 'field2' must be less than 100", $errors);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function testDtoDeserializeAssoc() : void
+	{
+		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameterDeserializeAssoc');
+		$resolver = $this->resolverFactory->createMethodResolver($method);
+
+		$rawData = [["prop3" => 1, "prop1" => "test", "prop2" => '1', "prop4" => 'test@test.com']];
+		[$success, $result] = $resolver->weakResolve($rawData);
+
+		$this->assertTrue($success);
+		self::assertEquals(new TestDtoDeserializeAssoc("test", 1, true, new TestEmail('test@test.com')), $result[0]);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function testDtoDeserializeAssocTypeErrorInConstructorCall() : void
+	{
+		$method = new \ReflectionMethod(TestApiService::class, 'dtoParameterDeserializeAssoc');
+		$resolver = $this->resolverFactory->createMethodResolver($method);
+
+		$rawData = [["prop3" => 1, "prop1" => null, "prop2" => '1', "prop4" => 'test@test.com']];
+		[$success, $errors] = $resolver->weakResolve($rawData);
+
+		$this->assertFalse($success);
+		$this->assertStringContainsString("'param1': __construct(): Argument #1 (\$field1) must be of type string, null given", $errors);
 	}
 
 	/**
