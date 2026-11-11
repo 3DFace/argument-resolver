@@ -36,19 +36,11 @@ readonly class EnvelopeClassTypeResolver implements TypeResolver
 			$obj = ($this->factory)($result);
 		} catch (\TypeError $e) {
 			$msg = $e->getMessage();
-			return [false, $this->cleanUpTypeErrorMessage($msg)];
+			return [false, TypeResolverHelper::cleanUpTypeErrorMessage($msg)];
 		} catch (\Throwable $e) {
 			return [false, $e->getMessage()];
 		}
 		return [true, $obj];
-	}
-
-	private function cleanUpTypeErrorMessage(string $msg) : string
-	{
-		if ($called_in = \strpos($msg, ', called in')) {
-			$msg = \substr($msg, 0, $called_in);
-		}
-		return \preg_replace("|[\w\\\\]+::|", '', $msg);
 	}
 
 }

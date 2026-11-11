@@ -101,7 +101,7 @@ readonly class MethodParametersResolver implements TypeResolver
 				\array_keys($parameters_errors),
 				\array_values($parameters_errors),
 			);
-			$error = \count($error_list) === 1 ? $error_list[0] : ('['.\implode(', ', $error_list).']');
+			$error = \count($error_list) === 1 ? $error_list[0] : ('['.\implode('; ', $error_list).']');
 			return [false, $error];
 		}
 

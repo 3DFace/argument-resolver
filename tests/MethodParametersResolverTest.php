@@ -336,7 +336,7 @@ class MethodParametersResolverTest extends TestCase
 		[$success, $errors] = $resolver->weakResolve($rawData);
 
 		$this->assertFalse($success);
-		$this->assertStringContainsString("'param1': ['field2': int expected, 'field4': is mandatory]", $errors);
+		$this->assertStringContainsString("'param1': ['field2': int expected, string given; 'field4': is mandatory]", $errors);
 	}
 
 	/**

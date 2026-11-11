@@ -30,15 +30,23 @@ class BoolTypeResolverTest extends TestCase
 
 		[$success, $error] = $this->resolver->strictResolve(1);
 		$this->assertFalse($success);
-		$this->assertEquals('bool expected', $error);
+		$this->assertEquals('bool expected, int given', $error);
 
 		[$success, $error] = $this->resolver->strictResolve('true');
 		$this->assertFalse($success);
-		$this->assertEquals('bool expected', $error);
+		$this->assertEquals('bool expected, string given', $error);
 
 		[$success, $error] = $this->resolver->strictResolve(null);
 		$this->assertFalse($success);
-		$this->assertEquals('bool expected', $error);
+		$this->assertEquals('bool expected, null given', $error);
+
+		[$success, $error] = $this->resolver->strictResolve([]);
+		$this->assertFalse($success);
+		$this->assertEquals('bool expected, array given', $error);
+
+		[$success, $error] = $this->resolver->strictResolve(new \stdClass());
+		$this->assertFalse($success);
+		$this->assertEquals('bool expected, object given', $error);
 	}
 
 	public function testWeakResolve() : void
@@ -101,11 +109,20 @@ class BoolTypeResolverTest extends TestCase
 		// invalid
 		[$success, $error] = $this->resolver->weakResolve('abc');
 		$this->assertFalse($success);
-		$this->assertEquals('bool expected', $error);
+		$this->assertEquals('bool expected, string given', $error);
 
 		[$success, $error] = $this->resolver->weakResolve(2);
 		$this->assertFalse($success);
-		$this->assertEquals('bool expected', $error);
+		$this->assertEquals('bool expected, int given', $error);
+
+		[$success, $error] = $this->resolver->weakResolve([]);
+		$this->assertFalse($success);
+		$this->assertEquals('bool expected, array given', $error);
+
+		[$success, $error] = $this->resolver->weakResolve(new \stdClass());
+		$this->assertFalse($success);
+		$this->assertEquals('bool expected, object given', $error);
+
 
 	}
 }

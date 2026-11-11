@@ -12,12 +12,12 @@ class ArrayTypeResolver implements TypeResolver
 
 	public function strictResolve(mixed $value) : array
 	{
-		return \is_array($value) ? [true, $value] : [false, 'array expected'];
+		return \is_array($value) ? [true, $value] : [false, 'array expected, '.\gettype($value).' given'];
 	}
 
 	public function weakResolve(mixed $value) : array
 	{
-		return \is_array($value) ? [true, $value] : [false, 'array expected'];
+		return \is_array($value) ? [true, $value] : [false, 'array expected, '.\gettype($value).' given'];
 	}
 
 }

@@ -30,7 +30,15 @@ class FloatTypeResolverTest extends TestCase
 
 		[$success, $error] = $this->resolver->strictResolve('1.23');
 		$this->assertFalse($success);
-		$this->assertEquals('float expected', $error);
+		$this->assertEquals('float expected, string given', $error);
+
+		[$success, $error] = $this->resolver->strictResolve([]);
+		$this->assertFalse($success);
+		$this->assertEquals('float expected, array given', $error);
+
+		[$success, $error] = $this->resolver->strictResolve(new \stdClass());
+		$this->assertFalse($success);
+		$this->assertEquals('float expected, object given', $error);
 	}
 
 	public function testWeakResolve() : void
@@ -57,14 +65,23 @@ class FloatTypeResolverTest extends TestCase
 
 		[$success, $error] = $this->resolver->weakResolve('abc');
 		$this->assertFalse($success);
-		$this->assertEquals('float expected', $error);
+		$this->assertEquals('float expected, string given', $error);
 
 		[$success, $error] = $this->resolver->weakResolve(true);
 		$this->assertFalse($success);
-		$this->assertEquals('float expected', $error);
+		$this->assertEquals('float expected, bool given', $error);
 
 		[$success, $error] = $this->resolver->weakResolve(null);
 		$this->assertFalse($success);
-		$this->assertEquals('float expected', $error);
+		$this->assertEquals('float expected, null given', $error);
+
+		[$success, $error] = $this->resolver->weakResolve([]);
+		$this->assertFalse($success);
+		$this->assertEquals('float expected, array given', $error);
+
+		[$success, $error] = $this->resolver->weakResolve(new \stdClass());
+		$this->assertFalse($success);
+		$this->assertEquals('float expected, object given', $error);
 	}
+
 }

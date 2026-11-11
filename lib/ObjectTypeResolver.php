@@ -12,14 +12,14 @@ class ObjectTypeResolver implements TypeResolver
 
 	public function strictResolve(mixed $value) : array
 	{
-		return \is_object($value) ? [true, $value] : [false, 'object expected'];
+		return \is_object($value) ? [true, $value] : [false, 'object expected, '.\gettype($value).' given'];
 	}
 
 	public function weakResolve(mixed $value) : array
 	{
 		return (\is_object($value) || \is_array($value) && !\array_is_list($value))
 			? [true, (object)$value]
-			: [false, 'object|assoc expected'];
+			: [false, 'object|assoc expected, '.\gettype($value).' given'];
 	}
 
 }

@@ -12,7 +12,7 @@ class IntTypeResolver implements TypeResolver
 
 	public function strictResolve(mixed $value) : array
 	{
-		return \is_int($value) ? [true, $value] : [false, 'int expected'];
+		return \is_int($value) ? [true, $value] : [false, TypeResolverHelper::makeBadTypeMessage('int', $value)];
 	}
 
 	public function weakResolve(mixed $value) : array
@@ -27,7 +27,7 @@ class IntTypeResolver implements TypeResolver
 				return [true, $int_val];
 			}
 		}
-		return [false, 'int expected'];
+		return [false, TypeResolverHelper::makeBadTypeMessage('int', $value)];
 	}
 
 }
